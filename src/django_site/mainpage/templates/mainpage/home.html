@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+Hello there
+
+<p>Image 1 is being displayed with the picture method</p>
+<p>Image 2 & 3 are using a middleware for the suffix choosing</p>
+{{imageType}} - test var
+<div class="row">
+  <div class="column">
+    <picture class="container ">
+      <source srcset="{% static 'images/cat1.webp' %}" type="image/webp">
+      <source srcset="{% static 'images/cat1.png' %}" type="image/png">
+      <img src="{% static 'images/cat1' %}{{imageType}}" loading="lazy" alt="Image 1">
+    </picture> <!-- </picture>-->
+  </div> <!-- </div column>-->
+
+  <div class="column">
+    <script>console.log("IMG type:", {{imageType}})</script>
+    <img class="modernizr-image" src="{% static 'images/cat2' %}{{imageType}}" loading="lazy" alt="Image 2">
+  </div> <!-- </div column>-->
+
+  <div class="column">
+    <script>console.log("IMG type:", {{imageType}})</script>
+    <img class="modernizr-image" src="{% static 'images/cat3'%}{{imageType}}" loading="lazy" alt="Image 3">
+  </div> <!-- </div column>-->
+</div> <!-- </div row>-->
+
+
+{% endblock %}

@@ -1,0 +1,81 @@
+<!-- templates/home.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django + Stripe Checkout</title>
+
+    <!-- Header Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    
+    <!-- Header Scripts -->
+    <!-- <link rel="stylesheet" href={% static 'card_element.css' %}>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'stripe_payments.js' %}"></script> -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+
+      </div> <!--</div class="container">-->
+    </section> <!--/<section class="section">-->
+      
+    <section class="section">
+      <div class="container">
+        <form id="signup-form">
+          <div>
+            <input id="email" type="text" placeholder="Email address" required />
+          </div>
+​          <br>
+          <button class="button is-primary" id="email-submit" type="submit">
+            <span id="button-text">Sign up</span>
+          </button>
+        </form>
+      </div> <!--</div class="container">-->
+    </section> <!--/<section class="section">-->
+    
+
+    <section class="section">
+      <div class="container">
+        <button class="button is-primary" id="submitBtn">Purchase!</button>
+      </div>
+    </section>
+
+    <!-- Scripts -->
+    <script>
+      function createCustomer() {
+        let billingEmail = document.querySelector('#email').value;
+        return fetch('/create-customer', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: billingEmail,
+          }),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((result) => {
+            // result.customer.id is used to map back to the customer object
+            // result.setupIntent.client_secret is used to create the payment method
+            return result;
+          });
+      }
+      let signupForm = document.getElementById('signup-form');
+      signupForm.addEventListener('submit', function (evt) {
+        evt.preventDefault();
+        // Create Stripe customer
+        createCustomer().then((result) => {
+          customer = result.customer;
+        });
+      });
+    </script>
+
+  </body>
+</html>
